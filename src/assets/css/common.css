@@ -1,0 +1,17 @@
+html{
+    background: #f3f4f9;
+}
+/*禁止左右滑动*/
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+body, button, input, keygen, legend, select, textarea {
+    font-family:   Helvetica,sans-serif,STHeiTi;
+    color: #333;
+    outline: 0;
+}
+/*配置加载中时菊花图的样式*/
+img[lazy=loading]{
+    transform: scale(0.1);
+}
