@@ -17,15 +17,15 @@
 <!--    轮播图-->
 <!--分类导航-->
     <ul class="nav">
-      <li>
+      <li @click="gotoPath('Recommoned','/recommoned')">
         <div class="icon-container"><i class="iconfont icon icon-date"></i></div>
         <p>每日推荐</p>
       </li>
-      <li>
+      <li @click="gotoPath('PlayListView', '/playListView')">
         <div class="icon-container"><i class="iconfont icon icon-music"></i></div>
         <p>歌单</p>
       </li>
-      <li>
+      <li @click="gotoPath('Rank', '/rank')">
         <div class="icon-container"><i class="iconfont icon icon-rank"></i></div>
         <p>排行榜</p>
       </li>
@@ -44,7 +44,7 @@
     <div class="home-item"  >
       <div class="title-wrapper">
         <div class="title">每日推荐</div>
-        <div class="more" >
+        <div class="more" @click="gotoPath('PlayList', '/playList')" >
           <i class="iconfont icon-more"></i>
         </div>
       </div>
@@ -56,7 +56,7 @@
     <div class="home-item"  >
       <div class="title-wrapper">
         <div class="title">热门歌手</div>
-        <div class="more">
+        <div class="more" @click="gotoPath('Artists','/artists')">
           <i class="iconfont icon-more"></i>
         </div>
       </div>
@@ -138,7 +138,6 @@
       border-radius: 10px;
       overflow: hidden;
       /* 设置圆点样式*/
-
       --swiper-pagination-color: #ff0000;
       img{
         /*轮播图bug*/
@@ -212,7 +211,7 @@
 // @ is an alias to /src
 import axios from 'axios'
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
-import playList from '../components/IndexComponents/playList'
+import playList from '../components/util/playList'
 import 'swiper/css/swiper.css'
 export default {
   name: 'Home',
@@ -225,10 +224,12 @@ export default {
         pagination: {
           el: '.swiper-pagination',
           // bulletElement : 'div',
+          slidesPerView: 'auto',//默认一个屏幕显示几张图，必须auto！
+          centeredSlides: true,//每屏，居中显示
 
         },
         autoplay: {
-          delay:  1000,
+          delay:  3500,
           disableOnInteraction: false // 手动切换之后继续自动轮播
         }
       },
@@ -241,7 +242,6 @@ created() {
   this.getNewSong()
   this.getPlayList()
   this.getArtlists()
-
 },
   methods:{
     //请求轮播数据
@@ -263,7 +263,19 @@ created() {
     async getArtlists(){
       const { data } = await axios.get('/top/artists?offset=0&limit=10') //获取十条热门歌手信息
       if(data.code === 200) this.artistsData = data.artists
-      console.log(this.artistsData);
+      // console.log(this.artistsData);
+    },
+  //  路由方法
+  //   gotoRecommoned(){
+  //     this.$router.push({
+  //       name:'Recommoned',
+  //       path:'/recommoned'
+  //     })
+  //   },
+    gotoPath(name,path){
+      this.$router.push({
+        name,path
+      })
     }
   }
 }

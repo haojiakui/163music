@@ -9,7 +9,27 @@ Vue.use(VueRouter)
     path: '/',
     name: 'Home',
     component: Home
-  }
+  },
+    {
+      path : '/recommoned',
+      name:'Recommoned',
+      component:() => import(/* webpackChunkName: "about" */ '../views/recommoned.vue')
+    },
+    {
+      path : '/playListView',
+      name:'PlayListView',
+      component:() => import(/* webpackChunkName: "about" */ '../views/playListView.vue')
+    },
+    {
+      path : '/rank',
+      name:'Rank',
+      component:() => import(/* webpackChunkName: "about" */ '../views/rank.vue')
+    },
+    {
+      path : '/artists',
+      name:'Artists',
+      component:() => import(/* webpackChunkName: "about" */ '../views/artists.vue')
+    }
   // {
   //   path: '/about',
   //   name: 'About',
