@@ -60,15 +60,7 @@
           <i class="iconfont icon-more"></i>
         </div>
       </div>
-      <ul class="artists-list">
-        <li v-for="(item,index) in artistsData" :key="index">
-          <img v-lazy="`${item.picUrl}?param=400y400`" alt="">
-          <div>
-            <p class="name">{{item.name}}</p>
-            <p class="info">专辑{{item.albumSize}}张，共{{item.musicSize}}首歌</p>
-          </div>
-        </li>
-      </ul>
+      <artist-list :data="artistsData"></artist-list>
     </div>
     <div>11111</div>
   </div>
@@ -175,34 +167,6 @@
       color: #fff;
     }
   }
-/*   热门歌手   左图右文，经典*/
-  .artists-list{
-    li{
-      display: flex;
-      width: 100%;
-     align-items: center;
-      padding: 30px;
-      border-top: 1PX solid #e6e6e6; //
-      margin-left: -20px; //解决由于padding导致的边框未撑满全容器
-      margin-right: -20px;//解决由于padding导致的边框未撑满全容器
-      img{
-        width: 80px;
-        height: 80px;
-        margin-right: 20px;
-      }
-      .name{
-        font-size: 30px;
-        color: #000;
-        margin-bottom: 20px;
-      }
-      .info{
-        font-size: 24px;
-        color: #b2b2b2;
-      }
-    }
-  }
-/*  设置小圆点样式*/
-
 </style>
 <style>
 
@@ -212,11 +176,12 @@
 import axios from 'axios'
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import playList from '../components/util/playList'
+import artistList from '../components/util/artistList'
 import 'swiper/css/swiper.css'
 export default {
   name: 'Home',
   components: {
-    Swiper,SwiperSlide,playList
+    Swiper,SwiperSlide,playList,artistList
   },
    data(){
     return {

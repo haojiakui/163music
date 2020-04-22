@@ -7,7 +7,7 @@ import router from './router'
 import store from './store'
 import './assets/css/reset.css' //👈重置全局样式
 import './assets/fonts/iconfont.css' //👈全局导入字体图标
-FastClick.attach(document.body)     //👈解决移动端三百毫米延迟
+FastClick.attach(document.body);    //👈解决移动端三百毫米延迟
 import './assets/css/common.css'
 //👇导入aixos
 import axios from 'axios'

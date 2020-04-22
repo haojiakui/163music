@@ -1,6 +1,11 @@
 html{
     background: #f3f4f9;
+    touch-action: none;
+/*    去除滑动时报错
+Unable to preventDefault inside passive event listener
+*/
 }
+
 /*禁止左右滑动*/
 html, body {
     max-width: 100%;

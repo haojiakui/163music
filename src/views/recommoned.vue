@@ -1,10 +1,12 @@
 <template>
 <!--  每日推荐页面-->
-  <div >
+  <div  class="content">
     <top
          :title="title"
          :count = newSongData.length
-         :img="img"></top>
+         :img="img">
+
+    </top>
 
       <Scroll :data="newSongData" class="recommonend-list">
         <song-list :data="newSongData"> </song-list>
@@ -64,6 +66,9 @@ import Scroll from '../components/util/scroll'
 </script>
 
 <style lang="less" scoped>
+  .content{
+    padding-bottom: 40px;
+  }
 .recommonend-list{
   height: calc(100vh - 380px);
   overflow: hidden;
