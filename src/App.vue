@@ -1,10 +1,18 @@
 <template>
   <div id="app">
-    <keep-alive>
       <router-view/>
-    </keep-alive>
+      <player></player>
   </div>
 </template>
+<script>
+  import Player from './components/player'
+  export default {
+    name:'app',
+    components:{
+      Player
+    }
+  }
 
+</script>
 <style lang="less">
 </style>
