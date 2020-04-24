@@ -31,16 +31,7 @@
       </li>
     </ul>
 <!--分类导航-->
-<!--    模板👇-->
-<!--    <div class="home-item"  >-->
-<!--       <div class="title-wrapper">-->
-<!--         <div class="title">每日推荐</div>-->
-<!--         <div class="more">-->
-<!--           <i class="iconfont icon-more"></i>-->
-<!--         </div>-->
-<!--       </div>-->
-<!--    </div>-->
-<!--        模板👆-->
+
     <div class="home-item"  >
       <div class="title-wrapper">
         <div class="title">每日推荐</div>
@@ -49,7 +40,7 @@
         </div>
       </div>
       <div class="play-list-box"  >
-        <play-list  :data="playListData"></play-list>
+        <play-list  :data="playListData" @clickItem="gotoPlayListInfo"></play-list>
       </div>
     </div>
 
@@ -60,9 +51,15 @@
           <i class="iconfont icon-more"></i>
         </div>
       </div>
-      <artist-list :data="artistsData"></artist-list>
+<!--  @clickItem="gotoArtistsInfo"     -->
+      <artist-list :data="artistsData"
+       @clickItem="gotoArtistsInfo"
+      ></artist-list>
     </div>
-    <div>11111</div>
+    <transition name="slide">
+      <router-view/>
+    </transition>
+
   </div>
 </template>
 <style lang="less" scoped>
@@ -240,6 +237,23 @@ created() {
     gotoPath(name,path){
       this.$router.push({
         name,path
+      })
+    },
+    gotoPlayListInfo(item){
+      console.log(item);
+      this.$router.push({
+        name:'PlayListViewInfo',
+        params:{
+          id:item.id
+        }
+      })
+    },
+    gotoArtistsInfo(item){
+      this.$router.push({
+        name:'ArtistsInfo',
+        params:{
+          id:item.id
+        }
       })
     }
   }

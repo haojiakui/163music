@@ -1,16 +1,20 @@
 <template>
 <!--  排行榜页面-->
+  <div class="page">
   <div>
     <m-header>排行榜</m-header>
     <div class="rank-wrapper">
       <div>
         <p class="rank-title">官方榜</p>
         <ul  class="officeList" >
-          <li class="list-item" v-for="(item,index) in officeListData" :key="index">
+          <li class="list-item"
+              @click="goToRankInfo(item.id)"
+              v-for="(item,index) in officeListData" :key="index">
             <img v-lazy="`${item.coverImgUrl}?param=400y400`" alt="">
             <div>
               <ul>
-                <li v-for="(listItem,listIndex) in item.tracks" class="list-txt" :key="listIndex">
+                <li v-for="(listItem,listIndex) in item.tracks" class="list-txt"
+                    :key="listIndex">
                   {{listIndex + 1}}.{{listItem.first}}-{{listItem.second}}
                 </li>
               </ul>
@@ -23,7 +27,9 @@
       <div>
         <p class="rank-title">推荐榜</p>
         <ul class="rank-list">
-          <li v-for="(item,index) in recommendListData" :key="index">
+          <li v-for="(item,index) in recommendListData"
+              @click="goToRankInfo(item.id)"
+              :key="index">
             <img v-lazy="`${item.coverImgUrl}?param=400y400`" alt="">
               <p>{{item.name}}</p>
             <i class="iconfont icon-zanting"></i>
@@ -31,6 +37,10 @@
         </ul>
       </div>
     </div>
+  </div>
+    <transition name="slide">
+      <router-view/>
+    </transition>
   </div>
 </template>
 
@@ -56,11 +66,16 @@
         const { data } = await axios.get('/toplist/detail')//请求回的数据前四条是官方榜，后面的是
         if(data.code === 200){
           this.officeListData = data.list.slice(0,4)
-          console.log('this.officeListData',this.officeListData);
           this.recommendListData = data.list.slice(4,data.list.length)
-          console.log('this.recommendListData',this.recommendListData);
         }
-        console.log(data );
+      },
+      goToRankInfo(id){
+        this.$router.push({
+           name:'RankInfo',
+            params:{
+             id
+            }
+        })
       }
     }
   }

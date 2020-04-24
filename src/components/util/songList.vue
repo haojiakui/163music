@@ -4,11 +4,13 @@
 <!--    左图  右边上下两行文字-->
     <li v-for="(item,index) in data" :key="index">
       <div>
-        <img v-lazy="`${item.song.album.picUrl}?param=400y400`" alt="">
+        <img v-lazy="`${item.al.picUrl}?param=400y400`" alt="">
       </div>
       <div>
         <p class=" ">{{item.name}}</p>
-        <p class="artist"><span v-for="(ii,index) in item.song.album.artists" :key="index">{{ii.name}}</span></p>
+        <p class="artist">
+          <span v-for="(ii,index) in item.ar" :key="index">{{ii.name }}</span>
+        </p>
       </div>
     </li>
   </ul>

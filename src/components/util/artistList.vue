@@ -2,7 +2,7 @@
 <!--  歌手组件-->
 <!--    向下拷贝的列表结构-->
     <ul class="artists-list">
-      <li v-for="(item,index) in data" :key="index">
+      <li v-for="(item,index) in data" :key="index" @click="handleClick(item)">
         <img v-lazy="`${item.picUrl}?param=400y400`" alt="">
         <div>
           <p class="name">{{item.name}}</p>
@@ -24,8 +24,12 @@
           return []
         }
       }
-
-    }
+    },
+   methods:{
+     handleClick(item){
+       this.$emit('clickItem',item)
+     }
+   }
   }
 </script>
 

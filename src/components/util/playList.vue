@@ -30,7 +30,8 @@
     methods:{
       //👇将用户点击的某一项歌单项发给父组件处理
       handleClick(val){
-        this.$emit('click',val)
+        this.$emit('clickItem',val)
+
       }
     }
 

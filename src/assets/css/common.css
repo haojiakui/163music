@@ -20,3 +20,28 @@ body, button, input, keygen, legend, select, textarea {
 img[lazy=loading]{
     transform: scale(0.5)!important;
 }
+.page-info-list{
+    height: calc(100vh - 380px);
+    overflow: hidden;
+}
+
+/*common.js*/
+/*路由样式*/
+.page{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:#f3f4f9 ;
+    z-index: 9999;
+    overflow: scroll;
+/*滚动可用*/
+}
+/*等待过程中的动画*/
+.slide-enter-active,.slide-leave-active{
+    transition: all .3s;
+}
+.slide-enter,.slide-leave-to{
+    transform: translate3d(100%,0,0);
+}
