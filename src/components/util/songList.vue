@@ -2,7 +2,8 @@
 <!--  单个歌手列表组件-->
   <ul class="song-list">
 <!--    左图  右边上下两行文字-->
-    <li v-for="(item,index) in data" :key="index">
+                                            <!--  item,指当前歌曲，index指当前歌曲所在的播放列表的索引              -->
+    <li v-for="(item,index) in data" :key="index" @click="handleClick(item,index)">
       <div>
         <img v-lazy="`${item.al.picUrl}?param=400y400`" alt="">
       </div>
@@ -26,7 +27,14 @@
           return []
         }
       }
+    },
+    methods:{
+      handleClick(item,index){
+        this.$emit('clickItem',item,index)
+
+      }
     }
+
   }
 </script>
 
