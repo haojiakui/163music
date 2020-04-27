@@ -45,9 +45,23 @@
             <img :src="songImg" alt="">
             <i class="iconfont icon-xiai"></i>
           </swiper-slide>
-          <swiper-slide>
-            <p>歌词</p>
-            <span>{{lyricData}}</span>
+          <swiper-slide class="lyric-container">
+<!--            歌词-->
+             <scroll ref="lyricScroll" class="lyric-scroll">
+               <div>
+                 <ul  v-if="lyricLines">
+                   <li ref="lyricLine" v-for="(item,index) in lyricLines"
+                       :key="index"
+                       :class="{'active': index === currentLineNumber}"
+                       class="list-item">
+                     {{item.txt}}
+                   </li>
+                 </ul>
+                 <div v-else>暂无歌词</div>
+               </div>
+
+             </scroll>
+
           </swiper-slide>
           <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
@@ -95,12 +109,13 @@
   import { mapGetters,mapMutations } from 'vuex'
   import axios from 'axios'
   import { playMode } from "../common/js/aliasConfig";
-
+  import Scroll from './util/scroll'
   export default {
     name: 'player',
     components:{
       Swiper,
-      SwiperSlide
+      SwiperSlide,
+      Scroll
     },
     data(){
       return {
@@ -117,6 +132,8 @@
         currentTime:0, //播放的时间
         overTime: 0 ,//结束的时间
         touchBarWillMove: false, //光标锁
+        lyricLines : [], //格式化后的歌词
+        currentLineNumber:0,//决定哪一行是否显示
       }
     },
     computed :{
@@ -189,8 +206,11 @@
       },
       async getLyricData(id){
         const { data } = await axios.get(`lyric?id=${id}`)
-        if( data.code === 200 ){
-          this.lyricData = data.lrc.lyric//需要格式化歌词
+        if( data.code === 200 && data.lrc ){
+          this.lyricData = data.lrc.lyric //code为200且data.lrc为 真时
+          this.initLines()//格式化歌词
+        }else{
+          this.lyricData = null
         }
       },
       togglePlay(val){
@@ -266,6 +286,9 @@
           this.currentTime = e.target.currentTime;
           this.overTime = e.target.duration;
         }
+        if(this.lyricData){
+          this.moveLyric()
+        }
       },
       formatTime(val){
         // 格式化时间
@@ -301,6 +324,7 @@
         if(movedWidth <= 0) movedWidth = 0
         let p = movedWidth / barWidth
         this.currentTime = this.overTime * p
+        this.moveLyric()
       },
       //公共播放方法
       resetPlayer(){
@@ -315,6 +339,48 @@
         const pageX = e.pageX
         this.calcPercent(pageX)
         this.resetPlayer()
+      },
+      //格式化歌词
+      initLines(){
+        this.lyricLines = [] //再次重置格式化后的数据
+        if(this.lyricData){
+          const lines = this.lyricData.split('\n',)
+          for(let i = 0; i < lines.length; i++){
+            const line = lines[i]//过滤后每一行的数据
+            const timeExp = /\[(\d{2}):(\d{2}\.\d{2,3})\]/g
+            const result = timeExp.exec(line)
+            if (result){
+              const time = Number(result[1] * 60 * 1000) + Number(result[2] * 1000)
+              const txt = line.replace(timeExp,'').trim()//去除时间段，去除空格
+              this.lyricLines.push({
+                time,txt
+              })
+              // console.log(this.lyricLines);
+            }
+
+          }
+        }
+      },
+
+      moveLyric(){
+        this.currentLineNumber = this.findCurrentNumber(this.currentTime * 1000)
+        if(this.currentLineNumber > 6){
+          console.log(22);
+          this.$refs.lyricScroll.scrollToElement(this.$refs.lyricLine[this.currentLineNumber - 6],1000)
+        }else{
+          this.$refs.lyricScroll.scrollTo(0,0,1000)
+          console.log(11);
+        }
+      },
+
+      findCurrentNumber(time){
+        for(let i = 0; i < this.lyricLines.length ; i++) {
+          // console.log(i, '测试i');
+          if (time < this.lyricLines[i].time) {
+            return i - 1
+          }
+        }
+        return this.lyricLines.length - 1
       }
     }
   }
@@ -463,6 +529,31 @@
         left: 30px;
         font-size: 50px;
         color: #c4b9bb;
+      }
+    }
+    /*歌词样式*/
+    .lyric-container{
+      height: 100%;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      padding: 30px 30px 70px 30px;
+      overflow: hidden;
+      .lyric-scroll{
+        height: 100%;
+        width: 100%;
+        color: #fff ;
+        overflow: hidden;
+        text-align: center;
+        .list-item{
+          font-size: 24px;
+          line-height: 1.5;
+          min-height: 50px;
+          opacity: .5;
+          &.active{
+            opacity: 1;
+          }
+        }
       }
     }
   /*  播放器的进度条*/

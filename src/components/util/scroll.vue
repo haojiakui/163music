@@ -43,7 +43,14 @@
       //数据发生改变时refresh调用，数据发生改变基于父级传入slot的具体内容(props接收)
       refresh(){
         this.scroll && this.scroll.refresh() //或者
+      },
+      scrollToElement(){
+        this.scroll && this.scroll.scrollToElement.apply(this.scroll,arguments)
+      },
+      scrollTo(){
+        this.scroll &&  this.scroll.scrollTo.apply(this.scroll,arguments)
       }
+
     }
   }
 </script>
