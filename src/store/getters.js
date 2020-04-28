@@ -18,6 +18,17 @@ const getters = {
   //当前播放的歌曲信息
   currentSong(state){
     return state.playList[state.currentIndex] //用于获取播放歌曲的数据对象，待补充
+  },
+  isLove(state){
+    let isLove = false;
+    const currentSong = state.playList[state.currentIndex]
+    for (let i = 0; i < state.loveList.length; i += 1) {
+      if (currentSong && state.loveList[i].id === currentSong.id){
+        isLove = true;
+        return isLove ;
+      }
+    }
+    return isLove ;
   }
 }
 export default getters

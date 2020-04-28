@@ -43,7 +43,7 @@
           <swiper-slide  class="img-container">
             <!--          封面里有个img图标，一个心性-->
             <img :src="songImg" alt="">
-            <i class="iconfont icon-xiai"></i>
+            <i class="iconfont icon-xiai" :class="{'icon-xiai-red': isLove} " @click="addTolove"></i>
           </swiper-slide>
           <swiper-slide class="lyric-container">
 <!--            歌词-->
@@ -89,7 +89,7 @@
             <i class="iconfont icon-shangyiqu fz-80" @click="prev"></i>
             <i class="iconfont   fz-100" :class="playIcon" @click="togglePlay"></i>
             <i class="iconfont icon-xiayiqu fz-80" @click="next" ></i>
-            <i class="iconfont icon-more fz-40"></i>
+            <i class="iconfont icon-more fz-40" @click="togglePlayListShow"></i>
           </div>
         </div>
         <!--        👆底部-->
@@ -98,6 +98,19 @@
 
     </transition>
 <!--    👇bottom-->
+<!--    播放列表层，蒙版层-->
+    <div v-if="playlistShow" class="playlist-mask" @click="togglePlayListShow"></div>
+    <transition name="playlist">
+      <scroll class="playlist-scroll" v-if="playlistShow">
+        <ul  >
+          <li v-for="(item,index) in playList" :key="index" @click="addToPlay(index)">
+            <p>{{item.name}}- <span class="artists-name" v-for="(arItem,arIndex) in item.ar" :key="arIndex">{{arItem.name}}</span></p>
+            <i class="iconfont icon-shanchu2" @click.stop="delFromPlayList(item)"></i>
+          </li>
+        </ul>
+        <div class="close" @click="togglePlayListShow">关闭</div>
+      </scroll>
+    </transition>
 <!--    ref属性是为了将来找到该dom对象，控制该对象的播放暂停-->
     <audio :src="musicData.url" @timeupdate="updataTime"  ref="audio" @ended="end"></audio>
 
@@ -110,6 +123,7 @@
   import axios from 'axios'
   import { playMode } from "../common/js/aliasConfig";
   import Scroll from './util/scroll'
+  import playList from "./util/playList";
   export default {
     name: 'player',
     components:{
@@ -134,6 +148,7 @@
         touchBarWillMove: false, //光标锁
         lyricLines : [], //格式化后的歌词
         currentLineNumber:0,//决定哪一行是否显示
+        playlistShow:false ,//是否展示历史播放蒙层以及历史记录
       }
     },
     computed :{
@@ -143,7 +158,8 @@
         'sequencesList',
         'currentIndex',
         'mode',
-        'currentSong'
+        'currentSong',
+        'isLove' //判断是否在收藏列表
       ]),
       songName(){
         return this.currentSong ? this.currentSong.name : '这里空'
@@ -188,7 +204,11 @@
         'SET_PLAY_LIST',
         'SET_SEQUENCE_LIST',
         'SET_CURRENT_INDEX',
-        'SET_MODE'
+        'SET_MODE',
+        'DEL_FROM_PLAYLIST',
+        'SET_HISTORY_LIST',
+        'SET_LOVE_LIST',
+        'DEL_FROM_LOVE_LIST'
       ]),
       toggleShow(val){
         //  迷你播放器与大播放器的动画切换
@@ -200,6 +220,8 @@
           this.musicData = data.data[0]
           this.$nextTick(()=>{
             this.togglePlay(true)
+            this.SET_HISTORY_LIST(this.currentSong)
+
           //  不管当前有没有在播放，在dom加载完毕后都必须播放当前歌曲地址
           })
         }
@@ -381,6 +403,31 @@
           }
         }
         return this.lyricLines.length - 1
+      },
+      //改变展示开关
+      togglePlayListShow(){
+        this.playlistShow =  !this.playlistShow
+      },
+      addToPlay(index){
+        this.SET_CURRENT_INDEX(index)//将点击的这首歌的索引添加到currentindex
+        this.togglePlayListShow()//更改这首歌
+      },
+      delFromPlayList(item){
+        this.DEL_FROM_PLAYLIST({
+          'delsong': item ,
+          'cursong' : this.currentSong
+        })
+      //  删除该项后，又自动播放下删除项的下一首  ->阻止事件冒泡 @click.stop
+      // 删除了当前播放歌曲的上一曲时，index列表索引的index发生改变：
+
+
+      },
+      addTolove(){
+        if(this.isLove){
+          this.DEL_FROM_LOVE_LIST(this.currentSong)
+        }else{
+          this.SET_LOVE_LIST(this.currentSong)
+        }
       }
     }
   }
@@ -645,5 +692,68 @@
     .player-operate{
       transform: translate3d(0,100px,0);
     }
+  }
+
+/*  历史播放*/
+.playlist-enter-active,.playlist-leave-active{
+/*  历史记录的弹出效果*/
+  transition: all .3s;
+}
+.playlist-enter,.playlist-leave-to{
+  transform: translate3d(0,100%,0);
+}
+  .playlist-scroll{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 800px;
+    overflow: hidden;
+    z-index: 99999;
+    background: rgba(255,255,255,.95);
+    border-radius: 10px 10px 0 0;
+    ul{
+      padding-bottom: 80px; // 下方的关闭按钮
+      li{
+        padding: 30px 20px;
+        font-size: 24px;
+        border-bottom: 1Px solid #e6e6e6;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .artists-name{
+        font-size: 18px;
+        color: #b2b2b2;
+
+      }
+      i{
+        color: lightgray;
+        font-size: 24px;
+      }
+    }
+    .close{
+      height: 80px;
+      font-size: 30px;
+      color: #333;
+      line-height: 80px;
+      text-align: center;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-top: 1Px solid #e6e6e6;
+      background: white;
+    }
+  }
+  /*显示历史播放记录时的背后蒙版*/
+  .playlist-mask{
+position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99999;
+    background: rgba(0,0,0,.4);
   }
 </style>
