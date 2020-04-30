@@ -8,7 +8,7 @@
             :img="img">
     </top>
     <Scroll :data="formatData" class="page-info-list">
-      <song-list :data="formatData"> </song-list>
+      <song-list :data="formatData" @click="addToPlay"> </song-list>
     </Scroll>
   </div>
    </div>
@@ -18,9 +18,11 @@
   import axios from 'axios'
   import infoMixin from '../common/js/infoMixin'
   import { formatSongDetail } from '../common/js/util'
+  import playMixin from "../common/js/playMixin";
+
   export default {
     name: 'playListInfo',
-    mixins : [infoMixin],
+    mixins : [infoMixin,playMixin],
     created() {
       this.getInfo(this.$route.params.id)//将所有
     },

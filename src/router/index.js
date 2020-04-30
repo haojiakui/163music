@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-
 Vue.use(VueRouter)
 const VueRouterPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push (to) {
@@ -52,6 +51,33 @@ VueRouter.prototype.push = function push (to) {
             path : ':id',
             name:'ArtistsInfo',
             component:() => import(/* webpackChunkName: "about" */ '../views/artistsInfo.vue')
+          }
+        ]
+      },
+      {
+        path : '/search',
+        name:'search',
+        component:() => import(/* webpackChunkName: "about" */ '../views/search.vue')
+      },
+      {
+        path : '/userCenter',
+        name:'userCenter',
+        component:() => import(/* webpackChunkName: "about" */ '../views/userCenter.vue'),
+        children:[
+          {
+            path : '/userHistoryList',
+            name:'userHistoryList',
+            component:() => import(/* webpackChunkName: "about" */ '../views/userHistoryList.vue')
+          },
+          {
+            path : '/userLoveList',
+            name:'userLoveList',
+            component:() => import(/* webpackChunkName: "about" */ '../views/userLoveList.vue')
+          },
+          {
+            path : '/userPlayList',
+            name:'userPlayList',
+            component:() => import(/* webpackChunkName: "about" */ '../views/userPlayList.vue')
           }
         ]
       }

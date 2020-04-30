@@ -45,8 +45,6 @@
         this.SET_PLAY_LIST(this.formatData) //当前歌曲所在的歌曲列表
         this.SET_SEQUENCE_LIST(this.formatData)
         this.SET_CURRENT_INDEX(index)
-
-
       }
     }
   }

@@ -59,9 +59,7 @@
                  </ul>
                  <div v-else>暂无歌词</div>
                </div>
-
              </scroll>
-
           </swiper-slide>
           <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
@@ -168,7 +166,8 @@
         return this.currentSong  ? this.currentSong.ar : []
       },
       songImg(){
-        return this.currentSong ? `${this.currentSong.al.picUrl}?param=400y400` : ''
+        return this.currentSong  && this.currentSong.al.picUrl ? `${this.currentSong.al.picUrl}?param=400y400` :  require('../assets/image/default.jpg')
+          // require('../assets/image/default.jpg')
       },
       playIcon(){
         return this.playing ? 'icon-bofang' : 'icon-zanting'
@@ -499,7 +498,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 9999;
+    z-index: 99999;
     /*background:  no-repeat center center; */
     background-repeat: no-repeat;
     background-position: center center;

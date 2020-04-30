@@ -29,6 +29,15 @@ const getters = {
       }
     }
     return isLove ;
+  },
+  searchText(state){
+    return state.searchTest
+  },
+  historyList(state){
+    return state.historyList
+  },
+  loveList(state){
+    return state.loveList
   }
 }
 export default getters

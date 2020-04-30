@@ -5,18 +5,18 @@
       <m-header :red = false >{{title}}</m-header>
       <img :src="`${img}?param=400y400`" alt="">
     </div>
-    <div class="count">
-      共有{{count}}首歌曲
-    </div>
+    <count>{{count}}</count>
+
   </div>
 </template>
 
 <script>
   import mHeader from  '../mHeader'
+  import count from '../count'
   export default {
     name: 'top',
     components:{
-      mHeader
+      mHeader,count
     },
     props:{
         title:{
@@ -73,12 +73,5 @@
     transform: translate(-50%,-50%);
   }
 }
-  .count{
-    width: 100%;
-    height: 80px;
-    line-height: 80px;
-    padding-left: 30px;
-    font-size: 26px;
-    color: #808080;
-  }
+
 </style>

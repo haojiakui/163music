@@ -23,8 +23,9 @@ Vue.use(VueAwesomeSwiper)
 //👇配置 VueLazyload
 import VueLazyload from 'vue-lazyload' //👈导入懒加载插件
 Vue.use(VueLazyload,{
-  loading:  '/load.gif'//绝对路径下
+  loading:  '/load.gif',//绝对路径下
   //vue编译时不会进入main.js，因而，需要使用绝对路径,将加载时的图片拷贝到public目录，然后使用public下的该文件
+  error : '/err.jpg'
 })
 //👆VueLazyload
 Vue.config.productionTip = false

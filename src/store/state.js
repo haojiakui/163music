@@ -8,6 +8,6 @@ const state = {
 //
   historyList:JSON.parse(localStorage.getItem('HistoryList')) || [],//只能为字符串，使用JSON.parse转成对象
   loveList: JSON.parse(localStorage.getItem('LoveList')) || [],
-
+  searchTest: JSON.parse(localStorage.getItem('SearchTest')) || [],
 }
 export default state

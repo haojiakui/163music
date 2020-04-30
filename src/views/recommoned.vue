@@ -8,7 +8,7 @@
          :img="img">
     </top>
       <Scroll :data="formatData" class="page-info-list">
-        <song-list :data="formatData"> </song-list>
+        <song-list :data="formatData" @clickItem="addToPlay"> </song-list>
       </Scroll>
   </div>
   </div>
@@ -17,10 +17,11 @@
 <script>
 import axios from 'axios'
 import infoMixin from '../common/js/infoMixin'
+import playMixin from '../common/js/playMixin'
 import { formatSongDetail } from "../common/js/util";
 export default {
     name: 'recommoned',
-    mixins: [infoMixin],
+    mixins: [infoMixin,playMixin],
     methods:{
       async getNewSong (){
         const { data } = await axios.get('/personalized/newsong')

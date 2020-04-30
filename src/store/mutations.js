@@ -60,6 +60,32 @@ const mutations = {
     const index = state.loveList.findIndex(item=>item.id === val.id)
     state.loveList.splice(index,1)
     localStorage.setItem('LoveList',JSON.stringify(state.loveList))
+  },
+  //将搜索历史词添加到state里
+  SET_SEARCH_TEXT(state,val){
+  //  判断这个关键字是否已被存储
+    let haveText = false;
+    for (let i = 0; i < state.searchTest.length; i += 1) {
+      if(state.searchTest[i] === val.trim()){
+        haveText = true
+        return
+      }
+    }
+    if(!haveText){
+      state.searchTest.unshift(val) //插入到数组的前面
+      state.searchTest =  state.searchTest.splice(0,10)//超过十条就不再截取
+    }
+    localStorage.setItem('SearchText',JSON.stringify(state.searchTest))
+  },
+//  点击删除关键字
+  DEL_FROM_SEARCH_TEXT(state,val){
+    for (let i = 0; i < state.searchTest.length; i += 1) {
+      if(state.searchTest[i] === val.trim()){
+        state.searchTest.splice(i,1)
+      }
+    }
+    localStorage.setItem('SearchText',JSON.stringify(state.searchTest))
   }
+
 }
 export default mutations

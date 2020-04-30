@@ -1,9 +1,9 @@
 <template>
   <div >
       <div class="header">
-        <div class="personal">我的</div>
+        <div class="personal" @click="goToUserCenter">我的</div>
         <div>MIKO</div>
-        <i class="iconfont icon-chaxun"></i>
+        <i class="iconfont icon-chaxun" @click="goToSearch"></i>
       </div>
 <!--    轮播图-->
       <div class="swiper-content home-item">
@@ -254,6 +254,18 @@ created() {
         params:{
           id:item.id
         }
+      })
+    },
+    goToSearch(){
+      this.$router.push({
+        name:'search',
+        path:'/search'
+      })
+    },
+    goToUserCenter(){
+      this.$router.push({
+        name:'userCenter',
+        path:'/userCenter'
       })
     }
   }
